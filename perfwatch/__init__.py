@@ -3,7 +3,7 @@ PerfWatch Library
 Python >=3.8
 """
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 # CLI entry point
 from .cli.main import cli as cli_main

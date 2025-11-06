@@ -147,6 +147,23 @@ $(document).ready(function() {
             });
         });
 
+        // Logout button
+        $('#logout-btn').click(function() {
+            if (confirm('Are you sure you want to logout?')) {
+                $.ajax({
+                    url: '/perfwatch/api/logout',
+                    method: 'POST',
+                    success: function() {
+                        window.location.href = '/perfwatch/dashboard/';
+                    },
+                    error: function() {
+                        // Even if error, redirect to dashboard (will show login)
+                        window.location.href = '/perfwatch/dashboard/';
+                    }
+                });
+            }
+        });
+
         // Modal close
         $('.modal-close').click(closeModal);
         

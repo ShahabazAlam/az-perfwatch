@@ -35,6 +35,7 @@ class DjangoPerfwatchView(BasePerfwatchView):
     
     def __init__(self):
         import os
+        import sys
         from django.template.loader import render_to_string
         from django.http import JsonResponse, HttpResponse, FileResponse
         from django.conf import settings
@@ -45,6 +46,12 @@ class DjangoPerfwatchView(BasePerfwatchView):
         
         # Add our templates directory to Django's template dirs
         template_dir = os.path.join(current_dir, 'templates')
+        
+        # Debug: Print template directory path (will help diagnose issues)
+        print(f"[PerfWatch] Template directory: {template_dir}")
+        print(f"[PerfWatch] Template exists: {os.path.exists(template_dir)}")
+        if os.path.exists(template_dir):
+            print(f"[PerfWatch] Template contents: {os.listdir(template_dir)}")
         
         # Configure templates
         if not hasattr(settings, 'TEMPLATES'):
@@ -62,7 +69,8 @@ class DjangoPerfwatchView(BasePerfwatchView):
             if 'DIRS' not in django_backend:
                 django_backend['DIRS'] = []
             if template_dir not in django_backend['DIRS']:
-                django_backend['DIRS'].append(template_dir)
+                django_backend['DIRS'].insert(0, template_dir)  # Insert at beginning for priority
+                print(f"[PerfWatch] Added template dir to existing backend")
                 
             # Ensure required context processors are present
             if 'OPTIONS' not in django_backend:
@@ -80,6 +88,7 @@ class DjangoPerfwatchView(BasePerfwatchView):
                     django_backend['OPTIONS']['context_processors'].append(processor)
         else:
             # No Django backend exists, create new one with unique name
+            print(f"[PerfWatch] Creating new Django template backend")
             settings.TEMPLATES.append({
                 'BACKEND': 'django.template.backends.django.DjangoTemplates',
                 'NAME': 'perfwatch_django',  # Add unique name
@@ -208,6 +217,7 @@ class DjangoPerfwatchView(BasePerfwatchView):
     def render_dashboard(self, request=None, **kwargs):
         """Render dashboard for Django - requires authentication"""
         from perfwatch.dashboard.auth import verify_session
+        import os
         
         # Check authentication
         session_id = request.COOKIES.get('perfwatch_session') if request else None
@@ -220,10 +230,40 @@ class DjangoPerfwatchView(BasePerfwatchView):
             'perfwatch_static_url': self.static_url,
             **kwargs
         }
-        return self.HttpResponse(
-            self.render_to_string('perfwatch/dashboard.html', context, request=request),
-            content_type='text/html'
-        )
+        
+        # Try to render using Django's template system first
+        try:
+            return self.HttpResponse(
+                self.render_to_string('perfwatch/dashboard.html', context, request=request),
+                content_type='text/html'
+            )
+        except Exception as e:
+            # If Django template loader fails, load template directly from file
+            print(f"[PerfWatch] Django template loader failed: {e}")
+            print(f"[PerfWatch] Attempting direct file load...")
+            
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            template_path = os.path.join(current_dir, 'templates', 'perfwatch', 'dashboard.html')
+            
+            print(f"[PerfWatch] Template path: {template_path}")
+            print(f"[PerfWatch] Template exists: {os.path.exists(template_path)}")
+            
+            if os.path.exists(template_path):
+                # Load template directly and do simple string replacement
+                with open(template_path, 'r', encoding='utf-8') as f:
+                    template_content = f.read()
+                
+                # Simple context replacement (for basic variables)
+                for key, value in context.items():
+                    template_content = template_content.replace(f'{{{{ {key} }}}}', str(value))
+                
+                return self.HttpResponse(template_content, content_type='text/html')
+            else:
+                return self.HttpResponse(
+                    f"<h1>Template Error</h1><p>Template not found at: {template_path}</p>",
+                    content_type='text/html',
+                    status=500
+                )
 
     def get_api_stats(self, request) -> Dict[str, Any]:
         """Get API statistics for Django"""

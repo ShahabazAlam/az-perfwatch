@@ -15,7 +15,36 @@ from perfwatch.config import _config_instance as config
 import importlib.util
 from pathlib import Path
 
+def version_callback(value: bool):
+    """Callback for --version flag"""
+    if value:
+        from perfwatch import __version__
+        typer.echo(f"PerfWatch version {__version__}")
+        raise typer.Exit()
+
 cli = typer.Typer(help="PerfWatch CLI")
+
+@cli.callback()
+def main(
+    version: bool = typer.Option(
+        None, 
+        "--version", 
+        "-v",
+        callback=version_callback,
+        is_eager=True,
+        help="Show version and exit"
+    )
+):
+    """
+    PerfWatch - Production-ready performance monitoring for Python web applications
+    """
+    pass
+
+@cli.command()
+def version():
+    """Show PerfWatch version"""
+    from perfwatch import __version__
+    typer.echo(f"PerfWatch version {__version__}")
 
 @cli.command()
 def migrate():

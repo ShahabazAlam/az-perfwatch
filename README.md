@@ -6,12 +6,21 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Framework Support](https://img.shields.io/badge/frameworks-Django%20%7C%20Flask%20%7C%20FastAPI-green.svg)]()
 [![Maintained](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/shahabazalam/perfwatch_mvp)
+[![PyPI version](https://img.shields.io/pypi/v/az-perfwatch.svg)](https://pypi.org/project/az-perfwatch/)
 
 PerfWatch is a comprehensive performance monitoring and optimization tool that helps developers identify, analyze, and fix performance bottlenecks in production Python applications. Get real-time insights, actionable recommendations, and detailed profiling data—all through an intuitive web dashboard.
 
 > **Author**: Shahabaz Alam  
 > **Email**: [shahabazalam1@gmail.com](mailto:shahabazalam1@gmail.com)  
 > **GitHub**: [@shahabazalam](https://github.com/ShahabazAlam)
+
+---
+
+## 🎯 Live Demo & Screenshots
+
+> 📸 **Screenshots coming soon!** Star this repo to get notified when demo images are added.
+
+Want to see PerfWatch in action? Check out the [documentation](https://github.com/ShahabazAlam/az-perfwatch) for setup instructions and examples.
 
 ---
 
@@ -214,9 +223,9 @@ Login with the credentials you created in Step 1.
 
 ### Django Setup
 
-**1. Install PerfWatch**
+**1. Install AZ-PerfWatch**
 ```bash
-pip install perfwatch
+pip install az-perfwatch
 ```
 
 **2. Add Middleware**
@@ -300,7 +309,7 @@ http://localhost:8000/perfwatch/dashboard/
 
 **1. Install Dependencies**
 ```bash
-pip install perfwatch flask sqlalchemy
+pip install az-perfwatch flask sqlalchemy
 ```
 
 **2. Initialize PerfWatch**
@@ -358,7 +367,7 @@ flask run
 
 **1. Install Dependencies**
 ```bash
-pip install perfwatch fastapi uvicorn sqlalchemy
+pip install az-perfwatch fastapi uvicorn sqlalchemy
 ```
 
 **2. Complete Integration**
@@ -502,7 +511,7 @@ password = "secure_password_here"
 
 After editing `perfwatch.conf`:
 ```bash
-python -m perfwatch.cli.main apply-config
+perfwatch apply-config
 ```
 
 ---
@@ -515,13 +524,13 @@ PerfWatch provides a comprehensive command-line interface for setup, management,
 
 **Create default configuration file**
 ```bash
-python -m perfwatch.cli.main create-default-config
+perfwatch create-default-config
 ```
 Creates `perfwatch.conf` with default settings (SQLite database, profiling enabled).
 
 **Show current configuration**
 ```bash
-python -m perfwatch.cli.main show-config
+perfwatch show-config
 ```
 Displays all current configuration values.
 
@@ -970,11 +979,6 @@ source env/bin/activate  # On Windows: env\Scripts\activate
 # Install dependencies
 pip install -e ".[dev]"
 
-# Run tests
-pytest
-
-# Run with coverage
-pytest --cov=perfwatch --cov-report=html
 ```
 
 ### Contribution Guidelines
@@ -1069,9 +1073,9 @@ SOFTWARE.
 
 ### Get Help
 
-- **Documentation**: [Full documentation](https://perfwatch.readthedocs.io) *(coming soon)*
-- **GitHub Issues**: [Report bugs or request features](https://github.com/yourusername/perfwatch/issues)
-- **Discussions**: [Ask questions and share tips](https://github.com/yourusername/perfwatch/discussions)
+- **Documentation**: [Full documentation] *(coming soon)*
+- **GitHub Issues**: [Report bugs or request features](https://github.com/ShahabazAlam/perfwatch/issues)
+- **Discussions**: [Ask questions and share tips](https://github.com/ShahabazAlam/perfwatch/discussions)
 
 ### Stay Updated
 
@@ -1085,10 +1089,10 @@ SOFTWARE.
 
 | Resource | Link |
 |----------|------|
-| 📦 **Installation** | `pip install perfwatch` |
+| 📦 **Installation** | `pip install az-perfwatch` |
 | 📚 **Documentation** | [docs.perfwatch.io](https://docs.perfwatch.io) *(coming soon)* |
-| 🐛 **Issues** | [GitHub Issues](https://github.com/yourusername/perfwatch/issues) |
-| 💬 **Discussions** | [GitHub Discussions](https://github.com/yourusername/perfwatch/discussions) |
+| 🐛 **Issues** | [GitHub Issues](https://github.com/ShahabazAlam/perfwatch/issues) |
+| 💬 **Discussions** | [GitHub Discussions](https://github.com/ShahabazAlam/perfwatch/discussions) |
 | 📝 **Changelog** | [CHANGELOG.md](CHANGELOG.md) |
 | 🤝 **Contributing** | [CONTRIBUTING.md](CONTRIBUTING.md) *(coming soon)* |
 
